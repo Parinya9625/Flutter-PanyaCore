@@ -5,6 +5,8 @@ import '../../extensions/extensions.dart';
 import 'circular_slider_style.dart';
 import 'circular_slider_painter.dart';
 
+export 'circular_slider_style.dart';
+
 class CircularSlider extends StatefulWidget {
   final double value;
   final double min;
