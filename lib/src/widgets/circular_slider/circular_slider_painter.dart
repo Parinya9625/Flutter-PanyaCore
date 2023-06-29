@@ -89,28 +89,16 @@ class CircularSliderPainter extends CustomPainter {
     var valuePaint = style.valuePaint;
     var thumbPaint = style.thumbPaint;
 
+    double angle = style.startAngle + (style.sweepAngle * sliderData.progress);
+    Offset offset = Offset(
+      sliderData.radius * math.cos(angle),
+      sliderData.radius * math.sin(angle),
+    );
+
     // Thumb background
-    canvas.drawCircle(
-      size.center(
-        Offset(
-          sliderData.radius * math.sin(style.sweepAngle * sliderData.progress),
-          -sliderData.radius * math.cos(style.sweepAngle * sliderData.progress),
-        ),
-      ),
-      0,
-      valuePaint,
-    );
+    canvas.drawCircle(size.center(offset), 0, valuePaint);
     // Thumb foreground
-    canvas.drawCircle(
-      size.center(
-        Offset(
-          sliderData.radius * math.sin(style.sweepAngle * sliderData.progress),
-          -sliderData.radius * math.cos(style.sweepAngle * sliderData.progress),
-        ),
-      ),
-      thumbPaint.strokeWidth,
-      thumbPaint,
-    );
+    canvas.drawCircle(size.center(offset), thumbPaint.strokeWidth, thumbPaint);
   }
 
   void createBlockArea(Canvas canvas, Size size) {
