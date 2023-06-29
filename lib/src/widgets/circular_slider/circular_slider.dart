@@ -29,8 +29,12 @@ class CircularSlider extends StatefulWidget {
   State<CircularSlider> createState() => _CircularSliderState();
 }
 
-class _CircularSliderState extends State<CircularSlider> {
+class _CircularSliderState extends State<CircularSlider>
+    with SingleTickerProviderStateMixin {
   bool isDrag = false;
+  late AnimationController animationController;
+  late Tween<double> tweenValue;
+  late Animation<double> animationValue;
 
   void updateSlider(BoxConstraints constraints, Offset position) {
     var box = Size(constraints.maxWidth, constraints.maxHeight);
@@ -59,6 +63,44 @@ class _CircularSliderState extends State<CircularSlider> {
     widget.onChanged?.call(newValue);
   }
 
+  void setupAnimationValue() {
+    animationController = AnimationController(
+      vsync: this,
+      duration: widget.style.animationDuration,
+    )..forward();
+
+    tweenValue = Tween<double>(begin: widget.max, end: widget.value);
+    animationValue = tweenValue.animate(
+      CurvedAnimation(
+        parent: animationController,
+        curve: widget.style.animationCurve,
+      ),
+    )..addListener(() {
+        setState(() {});
+      });
+  }
+
+  void updateAnimationValue(double oldValue) {
+    tweenValue
+      ..begin = oldValue
+      ..end = widget.value;
+    animationController
+      ..reset()
+      ..forward();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    setupAnimationValue();
+  }
+
+  @override
+  void didUpdateWidget(CircularSlider oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    updateAnimationValue(oldWidget.value);
+  }
+
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
@@ -74,7 +116,7 @@ class _CircularSliderState extends State<CircularSlider> {
           },
           child: CustomPaint(
             painter: CircularSliderPainter(
-              value: widget.value,
+              value: animationValue.value,
               min: widget.min,
               max: widget.max,
               style: widget.style,
