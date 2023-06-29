@@ -15,6 +15,7 @@ class CircularSliderPainter extends CustomPainter {
   final double value;
   final double min;
   final double max;
+  final bool draggable;
   final CircularSliderStyle style;
 
   Path _basePath = Path();
@@ -24,6 +25,7 @@ class CircularSliderPainter extends CustomPainter {
     required this.value,
     this.min = 0,
     this.max = 1,
+    this.draggable = false,
     this.style = const CircularSliderStyle(),
   })  : assert(min <= max),
         assert(
@@ -112,7 +114,8 @@ class CircularSliderPainter extends CustomPainter {
 
   @override
   bool? hitTest(Offset position) {
-    return _basePath.contains(position) || _valuePath.contains(position);
+    return draggable &&
+        (_basePath.contains(position) || _valuePath.contains(position));
   }
 
   @override

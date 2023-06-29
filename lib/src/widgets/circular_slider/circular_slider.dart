@@ -11,6 +11,7 @@ class CircularSlider extends StatefulWidget {
   final double value;
   final double min;
   final double max;
+  final bool draggable;
   final CircularSliderStyle style;
   final Function(double value)? onChanged;
 
@@ -19,6 +20,7 @@ class CircularSlider extends StatefulWidget {
     required this.value,
     this.min = 0,
     this.max = 1,
+    this.draggable = true,
     this.style = const CircularSliderStyle(),
     this.onChanged,
   })  : assert(min <= max),
@@ -127,6 +129,7 @@ class _CircularSliderState extends State<CircularSlider>
               value: animationValue.value,
               min: widget.min,
               max: widget.max,
+              draggable: widget.draggable,
               style: widget.style,
             ),
           ),
