@@ -7,6 +7,7 @@ class CircularSliderStyle {
   final double sweepAngle;
   final Duration animationDuration;
   final Curve animationCurve;
+  final CircularSliderDragMode mode;
 
   final Paint? _basePaint;
   final Paint? _valuePaint;
@@ -45,10 +46,24 @@ class CircularSliderStyle {
     this.sweepAngle = 2 * math.pi,
     this.animationDuration = const Duration(milliseconds: 150),
     this.animationCurve = Curves.easeInOut,
+    this.mode = CircularSliderDragMode.full,
     Paint? basePaint,
     Paint? valuePaint,
     Paint? thumbPaint,
   })  : _basePaint = basePaint,
         _valuePaint = valuePaint,
         _thumbPaint = thumbPaint;
+}
+
+enum CircularSliderDragMode {
+  /// Only slider value can drag
+  compact,
+
+  /// Everywhere inside circular silder can be drag
+  full;
+}
+
+extension CircularSliderDragModeX on CircularSliderDragMode {
+  bool get isCompact => this == CircularSliderDragMode.compact;
+  bool get isFull => this == CircularSliderDragMode.full;
 }

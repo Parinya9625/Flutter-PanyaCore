@@ -20,6 +20,7 @@ class CircularSliderPainter extends CustomPainter {
 
   Path _basePath = Path();
   Path _valuePath = Path();
+  Path _blockPath = Path();
 
   CircularSliderPainter({
     required this.value,
@@ -112,10 +113,30 @@ class CircularSliderPainter extends CustomPainter {
     );
   }
 
+  void createBlockArea(Canvas canvas, Size size) {
+    var shortestSize = math.min(size.width, size.height);
+    var blockScale = style.scale - (style.valuePaint.strokeWidth / 200);
+    var maxSize = shortestSize * blockScale;
+
+    _blockPath = Path();
+    _blockPath.addArc(
+      Rect.fromCenter(
+        center: size.center(Offset.zero),
+        width: maxSize,
+        height: maxSize,
+      ),
+      style.startAngle,
+      style.sweepAngle,
+    );
+  }
+
   @override
   bool? hitTest(Offset position) {
-    return draggable &&
-        (_basePath.contains(position) || _valuePath.contains(position));
+    var inValuePath =
+        _basePath.contains(position) || _valuePath.contains(position);
+    var inBlockPath = _blockPath.contains(position) && style.mode.isCompact;
+
+    return draggable && inValuePath && !inBlockPath;
   }
 
   @override
@@ -123,6 +144,7 @@ class CircularSliderPainter extends CustomPainter {
     drawBaseSlider(canvas, size);
     drawValueSlider(canvas, size);
     drawThumbSlider(canvas, size);
+    createBlockArea(canvas, size);
   }
 
   @override
