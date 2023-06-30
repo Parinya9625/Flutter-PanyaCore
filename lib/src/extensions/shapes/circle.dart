@@ -7,7 +7,7 @@ extension CircleOffsetExtension on Offset {
   }
 }
 
-extension CircleNunberExtension on num {
+extension CircleNumberExtension on num {
   double toDegree([double offset = 0]) {
     return (this * (180 / math.pi)) + offset;
   }
