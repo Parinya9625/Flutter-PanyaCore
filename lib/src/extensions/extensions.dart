@@ -1,2 +1,2 @@
-export 'number/number.dart';
-export 'shape/shape.dart';
+export 'numbers/numbers.dart';
+export 'shapes/shapes.dart';

@@ -1,5 +1,5 @@
 import 'dart:math' as math;
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 extension CircleOffsetExtension on Offset {
   double findAngle(Offset point) {

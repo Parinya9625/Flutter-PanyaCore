@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:panya_core/src/extensions/number/normalize.dart';
+import 'package:panya_core/src/extensions/numbers/normalize.dart';
 
 void main() {
   group("Normalize Extension - normalizeFrom", () {
