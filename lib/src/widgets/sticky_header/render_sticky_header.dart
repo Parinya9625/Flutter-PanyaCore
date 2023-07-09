@@ -8,6 +8,7 @@ class RenderStickyHeader extends RenderBox
         RenderBoxContainerDefaultsMixin<RenderBox, MultiChildLayoutParentData> {
   // ---------------
 
+  bool? _sticky;
   ScrollPosition? _scrollPosition;
   RenderStickyHeaderCallback? _callback;
 
@@ -15,8 +16,10 @@ class RenderStickyHeader extends RenderBox
     ScrollPosition? scrollPosition,
     RenderBox? header,
     RenderBox? child,
+    bool? sticky,
     RenderStickyHeaderCallback? callback,
   })  : _scrollPosition = scrollPosition,
+        _sticky = sticky,
         _callback = callback {
     if (child != null) add(child);
     if (header != null) add(header);
@@ -34,7 +37,7 @@ class RenderStickyHeader extends RenderBox
       PlatformDispatcher.instance.views.first.devicePixelRatio;
 
   set scrollPosition(ScrollPosition? value) {
-    if (_scrollPosition != value) return;
+    if (_scrollPosition == value) return;
 
     final oldScrollPosition = _scrollPosition;
     _scrollPosition = value;
@@ -47,9 +50,16 @@ class RenderStickyHeader extends RenderBox
   }
 
   set callback(RenderStickyHeaderCallback? value) {
-    if (_callback != value) return;
+    if (_callback == value) return;
 
     _callback = value;
+    markNeedsLayout();
+  }
+
+  set sticky(bool? value) {
+    if (_sticky == value) return;
+
+    _sticky = value;
     markNeedsLayout();
   }
 
@@ -118,7 +128,9 @@ class RenderStickyHeader extends RenderBox
     // Set header position
     final stuckOffset = roundToNearestPixel(getStuckOffset());
     final maxOffset = height - headerHeight;
-    _headerParentData.offset = Offset(0, max(0, min(-stuckOffset, maxOffset)));
+    _headerParentData.offset = _sticky == true
+        ? Offset(0, max(0, min(-stuckOffset, maxOffset)))
+        : Offset.zero;
 
     // Set child position
     _childParentData.offset = Offset(0, headerHeight);

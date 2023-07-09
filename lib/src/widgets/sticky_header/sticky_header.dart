@@ -12,12 +12,14 @@ typedef StickyHeaderCallback = void Function(StickyHeaderData data);
 class StickyHeader extends MultiChildRenderObjectWidget {
   final Widget header;
   final Widget child;
+  final bool sticky;
   final StickyHeaderCallback? callback;
 
   StickyHeader({
     super.key,
     required this.header,
     required this.child,
+    this.sticky = true,
     this.callback,
   }) : super(
           children: [child, header],
@@ -29,6 +31,7 @@ class StickyHeader extends MultiChildRenderObjectWidget {
     return RenderStickyHeader(
       scrollPosition: scrollPosition,
       callback: callback,
+      sticky: sticky,
     );
   }
 
@@ -40,6 +43,7 @@ class StickyHeader extends MultiChildRenderObjectWidget {
     final scrollPosition = Scrollable.maybeOf(context)?.position;
     renderObject
       ..scrollPosition = scrollPosition
-      ..callback = callback;
+      ..callback = callback
+      ..sticky = sticky;
   }
 }
