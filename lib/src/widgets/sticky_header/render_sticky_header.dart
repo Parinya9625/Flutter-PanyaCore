@@ -9,6 +9,7 @@ class RenderStickyHeader extends RenderBox
   // ---------------
 
   bool? _sticky;
+  bool? _overlapHeader;
   ScrollPosition? _scrollPosition;
   RenderStickyHeaderCallback? _callback;
 
@@ -17,9 +18,11 @@ class RenderStickyHeader extends RenderBox
     RenderBox? header,
     RenderBox? child,
     bool? sticky,
+    bool? overlapHeader,
     RenderStickyHeaderCallback? callback,
   })  : _scrollPosition = scrollPosition,
         _sticky = sticky,
+        _overlapHeader = overlapHeader,
         _callback = callback {
     if (child != null) add(child);
     if (header != null) add(header);
@@ -60,6 +63,13 @@ class RenderStickyHeader extends RenderBox
     if (_sticky == value) return;
 
     _sticky = value;
+    markNeedsLayout();
+  }
+
+  set overlapHeader(bool? value) {
+    if (_overlapHeader == value) return;
+
+    _overlapHeader = value;
     markNeedsLayout();
   }
 
@@ -121,7 +131,10 @@ class RenderStickyHeader extends RenderBox
       max(constraints.minWidth, childHeight),
     );
     final height = constraints.constrainHeight(
-      max(constraints.minHeight, headerHeight + childHeight),
+      max(
+        constraints.minHeight,
+        _overlapHeader == true ? childHeight : headerHeight + childHeight,
+      ),
     );
     size = Size(width, height);
 
@@ -133,19 +146,28 @@ class RenderStickyHeader extends RenderBox
         : Offset.zero;
 
     // Set child position
-    _childParentData.offset = Offset(0, headerHeight);
+    _childParentData.offset =
+        Offset(0, _overlapHeader == true ? 0 : headerHeight);
 
     // Send some data back to widget
     SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
+      // current header position offset from top (0 to [height])
+      double headerOffset = min(min(0, stuckOffset), height).abs().toDouble();
+      double progress = (headerOffset / height);
+
+      // current child position offset from top (0 to [childHeight])
+      double childOffset =
+          min(min(0, stuckOffset), childHeight).abs().toDouble();
+      double childProgress = _overlapHeader == true
+          ? (childOffset / (childHeight - headerHeight))
+          : (childOffset / childHeight);
+
       _callback?.call(
         StickyHeaderData(
           headerSize: _headerBox.size,
           childSize: _childBox.size,
-          progress:
-              (min(min(0, stuckOffset), height).abs() / height).clamp(0, 1),
-          childProgress:
-              (min(min(0, stuckOffset), childHeight).abs() / childHeight)
-                  .clamp(0, 1),
+          progress: progress.clamp(0, 1),
+          childProgress: childProgress.clamp(0, 1),
         ),
       );
     });

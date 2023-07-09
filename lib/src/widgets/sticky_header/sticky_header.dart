@@ -13,6 +13,7 @@ class StickyHeader extends MultiChildRenderObjectWidget {
   final Widget header;
   final Widget child;
   final bool sticky;
+  final bool overlapHeader;
   final StickyHeaderCallback? callback;
 
   StickyHeader({
@@ -20,6 +21,7 @@ class StickyHeader extends MultiChildRenderObjectWidget {
     required this.header,
     required this.child,
     this.sticky = true,
+    this.overlapHeader = false,
     this.callback,
   }) : super(
           children: [child, header],
@@ -32,6 +34,7 @@ class StickyHeader extends MultiChildRenderObjectWidget {
       scrollPosition: scrollPosition,
       callback: callback,
       sticky: sticky,
+      overlapHeader: overlapHeader,
     );
   }
 
@@ -44,6 +47,7 @@ class StickyHeader extends MultiChildRenderObjectWidget {
     renderObject
       ..scrollPosition = scrollPosition
       ..callback = callback
-      ..sticky = sticky;
+      ..sticky = sticky
+      ..overlapHeader = overlapHeader;
   }
 }
