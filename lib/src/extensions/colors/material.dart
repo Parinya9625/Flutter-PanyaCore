@@ -2,6 +2,11 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 
 extension MaterialColorExtension on Color {
+  /// Convert [Color] to [MaterialColor]
+  ///
+  /// ```dart
+  /// MaterialColor red = Colors.red.toMaterialColor();
+  /// ```
   MaterialColor toMaterialColor() {
     return MaterialColor(value, {
       50: withTint(0.9),
@@ -17,6 +22,11 @@ extension MaterialColorExtension on Color {
     });
   }
 
+  /// Add tint to [Color] with [factor] between 0 to 1
+  /// 
+  /// ```dart
+  /// Color redTint = Colors.red.withTint(0.5);
+  /// ```
   Color withTint(double factor) {
     return Color.fromRGBO(
       _withTint(red, factor),
@@ -26,6 +36,11 @@ extension MaterialColorExtension on Color {
     );
   }
 
+  /// Add shade to [Color] with [factor] between 0 to 1
+  /// 
+  /// ```dart
+  /// Color redShade = Colors.red.withShade(0.5);
+  /// ```
   Color withShade(double factor) {
     return Color.fromRGBO(
       _withShade(red, factor),

@@ -1,5 +1,11 @@
 extension SplitStringExtensions on String {
-  /// Split the string into chunck and keep all words
+  /// Split the string into chunck and keep all words and whitespace
+  ///
+  /// ```dart
+  /// var words = "This is a sentence.";
+  /// words.splitAndKeep([" is "]); // ["This", " is ", "a sentence."]
+  /// words.splitAndKeep([" is ", "sentence"]); // ["This", " is ", "a ", "sentence", "."]
+  /// ```
   ///
   /// Ref. https://medium.com/@shemar.gordon32/how-to-split-and-keep-the-delimiter-s-d433fb697c65
   List<String> splitAndKeep(
