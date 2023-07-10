@@ -33,6 +33,24 @@ class StickyHeader extends MultiChildRenderObjectWidget {
 
   /// Create Widget that will pinned header on top when scroll and will
   /// hide header when scroll to last position of child
+  ///
+  /// ```dart
+  /// ListView(
+  ///   children: [
+  ///     StickyHeader(
+  ///       header: Container(
+  ///         height: kToolbarHeight,
+  ///         color: Colors.red,
+  ///       ),
+  ///       child: const Column(
+  ///         children: [
+  ///           // Other widget
+  ///         ],
+  ///       ),
+  ///     ),
+  ///   ],
+  /// );
+  /// ```
   StickyHeader({
     super.key,
     required this.header,
