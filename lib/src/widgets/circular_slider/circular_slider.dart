@@ -7,14 +7,44 @@ import 'circular_slider_painter.dart';
 
 export 'circular_slider_style.dart';
 
+/// Slider widget that display in circular shape 
 class CircularSlider extends StatefulWidget {
+  /// Current value of slider
   final double value;
+  
+  /// Minimum number in slider, must be less than [max]
   final double min;
+
+  /// Maximum number in slider, must be more than [min]
   final double max;
+
+  /// Enable dragging for slider
   final bool draggable;
+
+  /// Apply style to [CircularSlider] like change start position with 
+  /// [CircularSliderStyle.startAngle] or change slider scale size with
+  /// [CircularSliderStyle.scale] etc.
   final CircularSliderStyle style;
+
+  /// Callback that call everytime [CircularSlider] update value
   final Function(double value)? onChanged;
 
+  /// Create slider widget that display in circular shape and when state is
+  /// chnaged, the widget will call [onChanged] callback and sent current vaule
+  /// back to update widget
+  ///
+  /// ```dart
+  /// CircularSlider(
+  ///   vaule: 50,
+  ///   min: 0,
+  ///   max: 100,
+  ///   onChanged: (newValue) {
+  ///     setState(() {
+  ///       // Update slider value here
+  ///     });  
+  ///   },
+  /// );
+  /// ```
   const CircularSlider({
     super.key,
     required this.value,

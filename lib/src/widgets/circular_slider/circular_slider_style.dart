@@ -1,16 +1,36 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 
+/// Customize style for [CircularSlider]
 class CircularSliderStyle {
+  /// Scale slider size, by default it scale to `0.8` that mean widget will be
+  /// display smaller in full container box and have empty space around it and
+  /// you can change to `1.0` to make slider scale full size to fit container
   final double scale;
+
+  /// Start position of slider that can be dragged, value can be between 0 to 2π
   final double startAngle;
+
+  /// Sweep angle base on [startAngle] that can show how much user can dragged
+  /// to the end of slider, value can be 0 to 2π
   final double sweepAngle;
+
+  /// Duration between old slider value to new slider value
   final Duration animationDuration;
+
+  /// Animation curve for slider
   final Curve animationCurve;
+
+  /// Drag behavior that user can interact with slider
   final CircularSliderDragMode mode;
 
+  /// Base paint that show background of slider value
   final Paint? _basePaint;
+
+  /// Value paint that show current value of slider
   final Paint? _valuePaint;
+  
+  /// Thumb paint that show head of slider value
   final Paint? _thumbPaint;
 
   Paint get basePaint => _basePaint ?? _defaultBasePaint();
@@ -40,6 +60,19 @@ class CircularSliderStyle {
       ..strokeCap = StrokeCap.round;
   }
 
+  /// Customize style for [CircularSlider]
+  ///
+  /// ```dart
+  /// CircularSlider(
+  ///   style: CircularSliderStyle(
+  ///     // Customize your style here
+  ///     scale: 0.8,
+  ///     startAngle: 3 * math.pi / 2,
+  ///     sweepAngle: 2 * math.pi / 2,
+  ///   ),
+  /// );
+  
+  /// ```
   const CircularSliderStyle({
     this.scale = 0.8,
     this.startAngle = 3 * math.pi / 2,
